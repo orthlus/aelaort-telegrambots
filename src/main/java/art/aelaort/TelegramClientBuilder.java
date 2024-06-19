@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 public class TelegramClientBuilder {
 	private String token;
 	private Supplier<TelegramUrl> telegramUrlSupplier;
-	private TelegramClientBuilder builder;
 
 	TelegramClientBuilder() {
 	}
@@ -23,6 +22,10 @@ public class TelegramClientBuilder {
 	}
 
 	public TelegramClient build() {
-		return new OkHttpTelegramClient(token, telegramUrlSupplier.get());
+		if (telegramUrlSupplier == null) {
+			return new OkHttpTelegramClient(token, TelegramUrl.DEFAULT_URL);
+		} else {
+			return new OkHttpTelegramClient(token, telegramUrlSupplier.get());
+		}
 	}
 }
