@@ -5,5 +5,8 @@ import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateC
 
 public interface SpringLongPollingBot extends LongPollingSingleThreadUpdateConsumer {
 	String getBotToken();
-	LongPollingUpdateConsumer getUpdatesConsumer();
+
+	default LongPollingUpdateConsumer getUpdatesConsumer() {
+		return this;
+	}
 }
