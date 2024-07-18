@@ -1,0 +1,28 @@
+package art.aelaort;
+
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Set;
+
+public interface SpringAdminChannelBot extends SpringLongPollingBot {
+	long getAdminId();
+
+	void consumeAdmin(Update update);
+
+	Set<Long> channelsIds();
+
+	@Override
+	default void consume(Update update) {
+		if (update.hasMessage()) {
+			Long chatId = update.getMessage().getChatId();
+			if (chatId == getAdminId() || channelsIds().contains(chatId)) {
+				consumeAdmin(update);
+			}
+		} else if (update.hasCallbackQuery()) {
+			Long chatId = update.getCallbackQuery().getMessage().getChatId();
+			if (chatId == getAdminId() || channelsIds().contains(chatId)) {
+				consumeAdmin(update);
+			}
+		}
+	}
+}
