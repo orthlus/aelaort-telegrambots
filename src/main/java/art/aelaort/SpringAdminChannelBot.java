@@ -15,7 +15,12 @@ public interface SpringAdminChannelBot extends SpringLongPollingBot {
 	default void consume(Update update) {
 		if (update.hasMessage()) {
 			Long chatId = update.getMessage().getChatId();
-			if (chatId == getAdminId() || channelsIds().contains(chatId)) {
+			if (chatId == getAdminId()) {
+				consumeAdmin(update);
+			}
+		} else if (update.hasChannelPost()) {
+			Long chatId = update.getChannelPost().getChatId();
+			if (channelsIds().contains(chatId)) {
 				consumeAdmin(update);
 			}
 		} else if (update.hasCallbackQuery()) {
