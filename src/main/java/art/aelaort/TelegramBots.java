@@ -25,16 +25,15 @@ public class TelegramBots {
 	}
 
 	public static Supplier<TelegramUrl> telegramUrlSupplier(String schema, String host, int port) {
-		return () -> new TelegramUrl(schema, host, port);
+		return () -> TelegramUrl.builder().schema(schema).host(host).port(port).build();
 	}
 
 	public static TelegramUrl buildTelegramUrl(String url) {
 		URI uri = URI.create(url);
-
-		String host = uri.getHost();
-		String scheme = uri.getScheme();
-		int port = uri.getPort();
-
-		return new TelegramUrl(scheme, host, port);
+		return TelegramUrl.builder()
+				.schema(uri.getScheme())
+				.host(uri.getHost())
+				.port(uri.getPort())
+				.build();
 	}
 }
