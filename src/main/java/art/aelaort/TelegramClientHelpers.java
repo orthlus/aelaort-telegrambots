@@ -5,11 +5,29 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 public class TelegramClientHelpers {
+	public static void execute(DeleteMessage.DeleteMessageBuilder<?, ?> deleteMessageBuilder, TelegramClient telegramClient) {
+		try {
+			telegramClient.execute(deleteMessageBuilder.build());
+		} catch (TelegramApiException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void execute(EditMessageText.EditMessageTextBuilder<?, ?> editMessageTextBuilder, TelegramClient telegramClient) {
+		try {
+			telegramClient.execute(editMessageTextBuilder.build());
+		} catch (TelegramApiException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void execute(SendMediaGroup.SendMediaGroupBuilder<?, ?> sendMediaGroupBuilder, TelegramClient telegramClient) {
 		try {
 			telegramClient.execute(sendMediaGroupBuilder.build());
@@ -34,9 +52,9 @@ public class TelegramClientHelpers {
 		}
 	}
 
-	public static void execute(SendMessage.SendMessageBuilder<?, ?> sendMessageBuilder, TelegramClient telegramClient) {
+	public static Message execute(SendMessage.SendMessageBuilder<?, ?> sendMessageBuilder, TelegramClient telegramClient) {
 		try {
-			telegramClient.execute(sendMessageBuilder.build());
+			return telegramClient.execute(sendMessageBuilder.build());
 		} catch (TelegramApiException e) {
 			throw new RuntimeException(e);
 		}
