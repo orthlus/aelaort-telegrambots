@@ -12,11 +12,12 @@ public interface Command {
 	static <T extends Command> Map<String, T> buildMap(Class<T> commandsClass) {
 		if (commandsClass.isEnum()) {
 			return Stream.of(commandsClass.getEnumConstants())
-					.sorted()
 					.collect(Collectors.toMap(
 							Command::getCommand,
 							Function.identity(),
-							(t, t2) -> t,
+							(t1, t2) -> {
+								throw new IllegalStateException("Duplicate key in enum " + commandsClass.getName());
+							},
 							TreeMap::new
 					));
 		}
