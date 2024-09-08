@@ -19,7 +19,7 @@ public class TelegramInit implements InitializingBean {
 	private final TelegramBotsLongPollingApplication telegramBotsApplication;
 	private final List<SpringLongPollingBot> bots;
 	private final Supplier<TelegramUrl> telegramUrlSupplier;
-	private final FuncParams func;
+	private final FuncParams addFunc;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -37,9 +37,9 @@ public class TelegramInit implements InitializingBean {
 		String list = bots.stream()
 				.map(bot -> bot.getName() + ":" + bot.getDescription())
 				.collect(Collectors.joining("\n"));
-		HttpEntity<String> entity = new HttpEntity<>(func.secret() + "\n" + list);
+		HttpEntity<String> entity = new HttpEntity<>(addFunc.secret() + "\n" + list);
 		new RestTemplate().postForObject(
-				func.uri(),
+				addFunc.uri(),
 				entity,
 				String.class
 		);

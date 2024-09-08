@@ -6,7 +6,7 @@
 
     <groupId>art.aelaort</groupId>
     <artifactId>aelaort-telegrambots</artifactId>
-    <version>9.0-SNAPSHOT</version>
+    <version>9.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
