@@ -9,10 +9,4 @@ public interface SpringLongPollingBot extends LongPollingSingleThreadUpdateConsu
 	default LongPollingUpdateConsumer getUpdatesConsumer() {
 		return this;
 	}
-
-	String getName();
-
-	default String getDescription() {
-		return getName();
-	}
 }
