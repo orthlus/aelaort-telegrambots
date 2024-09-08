@@ -6,7 +6,7 @@
 
     <groupId>art.aelaort</groupId>
     <artifactId>aelaort-telegrambots</artifactId>
-    <version>8.1</version>
+    <version>9.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -29,6 +29,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>6.1.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-client</artifactId>
             <version>${telegrambots.version}</version>
@@ -38,6 +44,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.26</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>art.aelaort</groupId>
+            <artifactId>ya-func-helper</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

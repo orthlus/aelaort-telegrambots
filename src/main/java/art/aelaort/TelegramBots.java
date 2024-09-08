@@ -1,5 +1,6 @@
 package art.aelaort;
 
+import art.aelaort.ya.func.helper.FuncParams;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.meta.TelegramUrl;
 
@@ -12,12 +13,12 @@ public class TelegramBots {
 		return new TelegramBotsLongPollingApplication();
 	}
 
-	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots, Supplier<TelegramUrl> telegramUrlSupplier) {
-		return new TelegramInit(application(), bots, telegramUrlSupplier);
+	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots, FuncParams funcParams, Supplier<TelegramUrl> telegramUrlSupplier) {
+		return new TelegramInit(application(), bots, telegramUrlSupplier, funcParams);
 	}
 
-	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots) {
-		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL);
+	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots, FuncParams funcParams) {
+		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL, funcParams);
 	}
 
 	public static Supplier<TelegramUrl> telegramUrlSupplier(String url) {
