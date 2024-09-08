@@ -14,14 +14,16 @@ public class TelegramBots {
 	}
 
 	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots,
-												  FuncParams funcParams,
+												  FuncParams addFuncParams,
+												  FuncParams existsFuncParams,
 												  Supplier<TelegramUrl> telegramUrlSupplier) {
-		return new TelegramInit(application(), bots, telegramUrlSupplier, funcParams);
+		return new TelegramInit(application(), bots, telegramUrlSupplier, addFuncParams, existsFuncParams);
 	}
 
 	public static TelegramInit createTelegramInit(List<SpringLongPollingBot> bots,
-												  FuncParams funcParams) {
-		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL, funcParams);
+												  FuncParams addFuncParams,
+												  FuncParams existsFuncParams) {
+		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL, addFuncParams, existsFuncParams);
 	}
 
 	public static Supplier<TelegramUrl> telegramUrlSupplier(String url) {
