@@ -1,10 +1,10 @@
 package art.aelaort;
 
-import art.aelaort.ya.func.helper.FuncParams;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.http.HttpEntity;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
@@ -14,15 +14,22 @@ import org.telegram.telegrambots.meta.api.methods.GetMe;
 
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class TelegramInit implements InitializingBean {
 	private final TelegramBotsLongPollingApplication telegramBotsApplication;
 	private final List<SpringLongPollingBot> bots;
 	private final Supplier<TelegramUrl> telegramUrlSupplier;
-	private final FuncParams addFunc;
-	private final FuncParams existsFunc;
+	private final TelegramListProperties properties;
+	private RestTemplate restTemplate;
+
+	@PostConstruct
+	private void init() {
+		restTemplate = new RestTemplateBuilder()
+				.rootUri(properties.getUrl())
+				.basicAuthentication(properties.getUser(), properties.getPassword())
+				.build();
+	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -34,19 +41,22 @@ public class TelegramInit implements InitializingBean {
 			telegramBotsApplication.registerBot(token, telegramUrlSupplier, generator, updateConsumer);
 		}
 		addBotsToStorage();
+		clean();
+	}
+
+	private void clean() {
+		restTemplate = null;
 	}
 
 	private void addBotsToStorage() {
-		String list = bots.stream()
+		List<BotInfo> list = bots.stream()
 				.filter(this::notExistsInStorage)
-				.map(bot -> getBotId(bot) + "," + getBotName(bot))
-				.collect(Collectors.joining("\n"));
-		HttpEntity<String> entity = new HttpEntity<>(addFunc.secret() + "\n" + list);
-		new RestTemplate().postForObject(
-				addFunc.uri(),
-				entity,
-				String.class
-		);
+				.map(bot -> new BotInfo(getBotId(bot), getBotName(bot)))
+				.toList();
+		if (list.isEmpty()) {
+			return;
+		}
+		restTemplate.postForObject("/add", list, String.class);
 	}
 
 	@SneakyThrows
@@ -59,11 +69,11 @@ public class TelegramInit implements InitializingBean {
 	}
 
 	private boolean notExistsInStorage(SpringLongPollingBot bot) {
-		return new RestTemplate().postForObject(
-				existsFunc.uri(),
-				new HttpEntity<>(existsFunc.secret() + ":" + getBotId(bot)),
-				Boolean.class
-		).equals(Boolean.FALSE);
+		return restTemplate.getForObject(
+				"/exists?botToken={botToken}",
+				String.class,
+				getBotId(bot)
+		).equals("false");
 	}
 
 	private String getBotId(SpringLongPollingBot bot) {

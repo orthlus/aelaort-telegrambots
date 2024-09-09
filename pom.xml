@@ -6,7 +6,7 @@
 
     <groupId>art.aelaort</groupId>
     <artifactId>aelaort-telegrambots</artifactId>
-    <version>9.1-SNAPSHOT</version>
+    <version>9.2</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,15 +23,22 @@
             <version>${telegrambots.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>6.1.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>3.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>6.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -44,11 +51,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.26</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>art.aelaort</groupId>
-            <artifactId>ya-func-helper</artifactId>
-            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>
