@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+import java.util.List;
+
 public class TelegramClientHelpers {
 	public static void execute(DeleteMessage.DeleteMessageBuilder<?, ?> deleteMessageBuilder, TelegramClient telegramClient) {
 		try {
@@ -28,25 +30,25 @@ public class TelegramClientHelpers {
 		}
 	}
 
-	public static void execute(SendMediaGroup.SendMediaGroupBuilder<?, ?> sendMediaGroupBuilder, TelegramClient telegramClient) {
+	public static List<Message> execute(SendMediaGroup.SendMediaGroupBuilder<?, ?> sendMediaGroupBuilder, TelegramClient telegramClient) {
 		try {
-			telegramClient.execute(sendMediaGroupBuilder.build());
+			return telegramClient.execute(sendMediaGroupBuilder.build());
 		} catch (TelegramApiException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static void execute(SendPhoto.SendPhotoBuilder<?, ?> sendPhotoBuilder, TelegramClient telegramClient) {
+	public static Message execute(SendPhoto.SendPhotoBuilder<?, ?> sendPhotoBuilder, TelegramClient telegramClient) {
 		try {
-			telegramClient.execute(sendPhotoBuilder.build());
+			return telegramClient.execute(sendPhotoBuilder.build());
 		} catch (TelegramApiException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static void execute(SendVideo.SendVideoBuilder<?, ?> sendVideoBuilder, TelegramClient telegramClient) {
+	public static Message execute(SendVideo.SendVideoBuilder<?, ?> sendVideoBuilder, TelegramClient telegramClient) {
 		try {
-			telegramClient.execute(sendVideoBuilder.build());
+			return telegramClient.execute(sendVideoBuilder.build());
 		} catch (TelegramApiException e) {
 			throw new RuntimeException(e);
 		}
