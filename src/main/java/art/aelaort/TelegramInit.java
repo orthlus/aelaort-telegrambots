@@ -77,6 +77,6 @@ public class TelegramInit implements InitializingBean {
 	}
 
 	private String getBotId(SpringLongPollingBot bot) {
-		return bot.getBotToken().split(":")[0];
+		return HashUtils.hashText(bot.getBotToken());
 	}
 }
