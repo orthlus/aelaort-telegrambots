@@ -12,6 +12,8 @@ import org.telegram.telegrambots.longpolling.util.DefaultGetUpdatesGenerator;
 import org.telegram.telegrambots.meta.TelegramUrl;
 import org.telegram.telegrambots.meta.api.methods.GetMe;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -72,8 +74,12 @@ public class TelegramInit implements InitializingBean {
 		return restTemplate.getForObject(
 				"/bots/exists?token={botToken}",
 				String.class,
-				getBotToken(bot)
+				encode(getBotToken(bot))
 		).equals("false");
+	}
+
+	private String encode(String text) {
+		return URLEncoder.encode(text, StandardCharsets.UTF_8);
 	}
 
 	private String getBotToken(SpringLongPollingBot bot) {
