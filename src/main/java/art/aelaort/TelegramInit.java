@@ -70,7 +70,7 @@ public class TelegramInit implements InitializingBean {
 
 	private boolean notExistsInStorage(SpringLongPollingBot bot) {
 		return restTemplate.getForObject(
-				"/bots/exists/{token}",
+				"/bots/exists?token={botToken}",
 				String.class,
 				getBotToken(bot)
 		).equals("false");
