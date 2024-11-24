@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface Command {
-	String getCommand();
-
 	static <T extends Command> Map<String, T> buildMap(Class<T> commandsClass) {
 		if (commandsClass.isEnum()) {
 			return Stream.of(commandsClass.getEnumConstants())
 					.collect(Collectors.toMap(
-							Command::getCommand,
+							t -> "/" + t.toString().toLowerCase(),
 							Function.identity(),
 							(t1, t2) -> {
 								throw new IllegalStateException("Duplicate key in enum " + commandsClass.getName());

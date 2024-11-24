@@ -18,7 +18,6 @@ public class BotCommands {
 				if (getInterfaces(declaredClass).contains(Command.class)) {
 					List<BotCommand> commands = map(declaredClass);
 					setCommands(commands, bot);
-					System.out.printf("for %s set commands: %s\n", bot.getClass(), commands);
 				}
 			}
 		}
