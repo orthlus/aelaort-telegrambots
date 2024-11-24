@@ -18,6 +18,7 @@ public class BotCommands {
 				if (getInterfaces(declaredClass).contains(Command.class)) {
 					List<BotCommand> commands = map(declaredClass);
 					setCommands(commands, bot);
+					break;
 				}
 			}
 		}
