@@ -12,8 +12,6 @@ import org.telegram.telegrambots.longpolling.util.DefaultGetUpdatesGenerator;
 import org.telegram.telegrambots.meta.TelegramUrl;
 import org.telegram.telegrambots.meta.api.methods.GetMe;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -41,6 +39,7 @@ public class TelegramInit implements InitializingBean {
 			DefaultGetUpdatesGenerator generator = new DefaultGetUpdatesGenerator();
 
 			telegramBotsApplication.registerBot(token, telegramUrlSupplier, generator, updateConsumer);
+			BotCommands.setCommands(bot);
 		}
 		addBotsToStorage();
 		clean();
