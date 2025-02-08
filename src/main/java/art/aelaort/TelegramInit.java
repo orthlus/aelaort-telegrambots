@@ -41,7 +41,10 @@ public class TelegramInit implements InitializingBean {
 			telegramBotsApplication.registerBot(token, telegramUrlSupplier, generator, updateConsumer);
 			BotCommands.setCommands(bot);
 		}
-		addBotsToStorage();
+		try {
+			addBotsToStorage();
+		} catch (Exception ignored) {
+		}
 		clean();
 	}
 
