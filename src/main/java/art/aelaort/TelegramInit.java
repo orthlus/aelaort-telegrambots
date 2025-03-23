@@ -25,10 +25,13 @@ public class TelegramInit implements InitializingBean {
 
 	@PostConstruct
 	private void init() {
-		restTemplate = new RestTemplateBuilder()
-				.rootUri(properties.getUrl())
-				.basicAuthentication(properties.getUser(), properties.getPassword())
-				.build();
+		try {
+			restTemplate = new RestTemplateBuilder()
+					.rootUri(properties.getUrl())
+					.basicAuthentication(properties.getUser(), properties.getPassword())
+					.build();
+		} catch (Exception ignored) {
+		}
 	}
 
 	@Override
