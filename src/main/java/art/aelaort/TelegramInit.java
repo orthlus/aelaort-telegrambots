@@ -20,15 +20,15 @@ public class TelegramInit implements InitializingBean {
 	private final TelegramBotsLongPollingApplication telegramBotsApplication;
 	private final List<SpringLongPollingBot> bots;
 	private final Supplier<TelegramUrl> telegramUrlSupplier;
-	private final TelegramListProperties properties;
 	private RestTemplate restTemplate;
+	private final DefaultValues defaultValues = new DefaultValues();
 
 	@PostConstruct
 	private void init() {
 		try {
 			restTemplate = new RestTemplateBuilder()
-					.rootUri(properties.getUrl())
-					.basicAuthentication(properties.getUser(), properties.getPassword())
+					.rootUri(defaultValues.getUrl())
+					.basicAuthentication(defaultValues.getUser(), defaultValues.getPassword())
 					.build();
 		} catch (Exception ignored) {
 		}
