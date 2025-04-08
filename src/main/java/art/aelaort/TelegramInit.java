@@ -1,6 +1,7 @@
 package art.aelaort;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,6 +22,7 @@ public class TelegramInit implements InitializingBean {
 	private final List<SpringLongPollingBot> bots;
 	private final Supplier<TelegramUrl> telegramUrlSupplier;
 	private RestTemplate restTemplate;
+	@Getter
 	private final DefaultValues defaultValues = new DefaultValues();
 
 	@PostConstruct
