@@ -59,7 +59,6 @@ public class TelegramInit implements InitializingBean {
 
 	private void addBotsToStorage() {
 		List<BotInfo> list = bots.stream()
-				.filter(this::notExistsInStorage)
 				.map(bot -> new BotInfo(getBotToken(bot), getBotName(bot)))
 				.toList();
 		if (list.isEmpty()) {
@@ -75,14 +74,6 @@ public class TelegramInit implements InitializingBean {
 				.build()
 				.execute(new GetMe())
 				.getUserName();
-	}
-
-	private boolean notExistsInStorage(SpringLongPollingBot bot) {
-		return restTemplate.postForObject(
-				"/bots/exists",
-				getBotToken(bot),
-				String.class
-		).equals("false");
 	}
 
 	private String getBotToken(SpringLongPollingBot bot) {
