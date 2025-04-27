@@ -1,5 +1,7 @@
 package art.aelaort;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.telegram.telegrambots.longpolling.util.DefaultGetUpdatesGenerator;
 import org.telegram.telegrambots.meta.TelegramUrl;
 import org.telegram.telegrambots.meta.api.methods.GetMe;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -64,7 +67,15 @@ public class TelegramInit implements InitializingBean {
 		if (list.isEmpty()) {
 			return;
 		}
-		restTemplate.postForObject("/bots", list, String.class);
+		restTemplate.postForObject("/bots", getJsonStr(list).getBytes(StandardCharsets.UTF_8), String.class);
+	}
+
+	private static String getJsonStr(List<BotInfo> list) {
+		try {
+			return new ObjectMapper().writeValueAsString(list);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@SneakyThrows
