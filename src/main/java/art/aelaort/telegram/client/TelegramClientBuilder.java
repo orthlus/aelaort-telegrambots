@@ -1,4 +1,4 @@
-package art.aelaort;
+package art.aelaort.telegram.client;
 
 import lombok.Setter;
 import lombok.experimental.Accessors;

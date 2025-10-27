@@ -1,4 +1,4 @@
-package art.aelaort;
+package art.aelaort.telegram;
 
 import java.util.Map;
 import java.util.TreeMap;

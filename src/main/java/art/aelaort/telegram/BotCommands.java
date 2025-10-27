@@ -1,5 +1,6 @@
-package art.aelaort;
+package art.aelaort.telegram;
 
+import art.aelaort.telegram.client.TelegramClientBuilder;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -11,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class BotCommands {
-	public static void setCommands(SpringLongPollingBot bot) {
+	public static void setCommands(SimpleLongPollingBot bot) {
 		Class<?>[] declaredClasses = bot.getClass().getDeclaredClasses();
 		for (Class<?> declaredClass : declaredClasses) {
 			if (declaredClass.isEnum()) {
@@ -37,7 +38,7 @@ public class BotCommands {
 	}
 
 	@SneakyThrows
-	private static void setCommands(List<BotCommand> commands, SpringLongPollingBot bot) {
+	private static void setCommands(List<BotCommand> commands, SimpleLongPollingBot bot) {
 		TelegramClientBuilder.builder()
 				.token(bot.getBotToken())
 				.build()

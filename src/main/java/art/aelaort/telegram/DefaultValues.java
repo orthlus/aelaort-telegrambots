@@ -1,4 +1,4 @@
-package art.aelaort;
+package art.aelaort.telegram;
 
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
-package art.aelaort;
+package art.aelaort.telegram;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface SpringAdminBot extends SpringLongPollingBot {
+public interface SimpleAdminBot extends SimpleLongPollingBot {
 	long getAdminId();
 
 	void consumeAdmin(Update update);

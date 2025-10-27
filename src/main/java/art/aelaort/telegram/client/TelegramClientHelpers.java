@@ -1,4 +1,4 @@
-package art.aelaort;
+package art.aelaort.telegram.client;
 
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;

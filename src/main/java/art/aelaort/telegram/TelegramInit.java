@@ -1,47 +1,39 @@
-package art.aelaort;
+package art.aelaort.telegram;
 
+import art.aelaort.telegram.client.TelegramClientBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.util.DefaultGetUpdatesGenerator;
 import org.telegram.telegrambots.meta.TelegramUrl;
 import org.telegram.telegrambots.meta.api.methods.GetMe;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public class TelegramInit implements InitializingBean {
+public class TelegramInit {
 	private final TelegramBotsLongPollingApplication telegramBotsApplication;
-	private final List<SpringLongPollingBot> bots;
+	private final List<SimpleLongPollingBot> bots;
 	private final Supplier<TelegramUrl> telegramUrlSupplier;
-	private RestTemplate restTemplate;
-	@Getter
-	private final DefaultValues defaultValues = new DefaultValues();
+	private final String botsUrl;
+	private final HttpClient client = HttpClient.newHttpClient();
 
 	@PostConstruct
-	private void init() {
-		try {
-			restTemplate = new RestTemplateBuilder()
-					.rootUri(defaultValues.getUrl())
-					.basicAuthentication(defaultValues.getUser(), defaultValues.getPassword())
-					.build();
-		} catch (Exception ignored) {
-		}
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		for (SpringLongPollingBot bot : bots) {
+	private void init() throws TelegramApiException {
+		for (SimpleLongPollingBot bot : bots) {
 			String token = bot.getBotToken();
 			LongPollingUpdateConsumer updateConsumer = bot.getUpdatesConsumer();
 			DefaultGetUpdatesGenerator generator = new DefaultGetUpdatesGenerator();
@@ -57,7 +49,7 @@ public class TelegramInit implements InitializingBean {
 	}
 
 	private void clean() {
-		restTemplate = null;
+		client.close();
 	}
 
 	private void addBotsToStorage() {
@@ -67,7 +59,24 @@ public class TelegramInit implements InitializingBean {
 		if (list.isEmpty()) {
 			return;
 		}
-		restTemplate.postForObject("/bots", getJsonStr(list).getBytes(StandardCharsets.UTF_8), String.class);
+		requestBots(list);
+	}
+
+	private void requestBots(List<BotInfo> list) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder()
+					.uri(URI.create(botsUrl + "/bots"))
+					.POST(HttpRequest.BodyPublishers.ofByteArray(getJsonStr(list).getBytes(StandardCharsets.UTF_8)))
+					.header("Content-Type", "application/octet-stream")
+					.build();
+			HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+
+			if (response.statusCode() != HttpURLConnection.HTTP_CREATED) {
+				System.err.println("TelegramInit http error code: " + response.statusCode());
+			}
+		} catch (IOException | InterruptedException e) {
+			System.err.println("TelegramInit http error: " + e.getMessage());
+		}
 	}
 
 	private static String getJsonStr(List<BotInfo> list) {
@@ -79,7 +88,7 @@ public class TelegramInit implements InitializingBean {
 	}
 
 	@SneakyThrows
-	private String getBotName(SpringLongPollingBot bot) {
+	private String getBotName(SimpleLongPollingBot bot) {
 		return TelegramClientBuilder.builder()
 				.token(bot.getBotToken())
 				.build()
@@ -87,7 +96,7 @@ public class TelegramInit implements InitializingBean {
 				.getUserName();
 	}
 
-	private String getBotToken(SpringLongPollingBot bot) {
+	private String getBotToken(SimpleLongPollingBot bot) {
 		return HashUtils.hashText(bot.getBotToken());
 	}
 }

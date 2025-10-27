@@ -6,14 +6,14 @@
 
     <groupId>art.aelaort</groupId>
     <artifactId>aelaort-telegrambots</artifactId>
-    <version>15.0</version>
+    <version>16.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <telegrambots.version>9.1.0</telegrambots.version>
+        <telegrambots.version>9.2.0</telegrambots.version>
     </properties>
 
     <dependencies>
@@ -22,25 +22,6 @@
             <artifactId>telegrambots-longpolling</artifactId>
             <version>${telegrambots.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>3.5.6</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>6.2.11</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-            <version>2.1.1</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-client</artifactId>
@@ -51,6 +32,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
