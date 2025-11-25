@@ -13,13 +13,12 @@ public class TelegramBots {
 	}
 
 	public static TelegramInit createTelegramInit(List<SimpleLongPollingBot> bots,
-												  Supplier<TelegramUrl> telegramUrlSupplier,
-												  String botsUrl) {
-		return new TelegramInit(application(), bots, telegramUrlSupplier, botsUrl);
+												  Supplier<TelegramUrl> telegramUrlSupplier) {
+		return new TelegramInit(application(), bots, telegramUrlSupplier);
 	}
 
-	public static TelegramInit createTelegramInit(List<SimpleLongPollingBot> bots, String botsUrl) {
-		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL, botsUrl);
+	public static TelegramInit createTelegramInit(List<SimpleLongPollingBot> bots) {
+		return new TelegramInit(application(), bots, () -> TelegramUrl.DEFAULT_URL);
 	}
 
 	public static Supplier<TelegramUrl> telegramUrlSupplier(String url) {
