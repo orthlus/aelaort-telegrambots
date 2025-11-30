@@ -1,15 +1,26 @@
 package art.aelaort.telegram;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.meta.TelegramUrl;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class TelegramBots {
 	public static TelegramBotsLongPollingApplication application() {
-		return new TelegramBotsLongPollingApplication();
+		return new TelegramBotsLongPollingApplication(
+				ObjectMapper::new,
+				() -> new OkHttpClient.Builder()
+						.callTimeout(Duration.ofMinutes(2))
+						.connectTimeout(Duration.ofMinutes(2))
+						.readTimeout(Duration.ofMinutes(2))
+						.writeTimeout(Duration.ofMinutes(2))
+						.build()
+		);
 	}
 
 	public static TelegramInit createTelegramInit(List<SimpleLongPollingBot> bots,
